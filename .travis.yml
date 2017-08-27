@@ -12,12 +12,14 @@ os:
   - linux
 
 before_install:
-  - go get github.com/mattn/goveralls
+  - if [ "$(git rev-parse --abbrev-ref HEAD)" == "" ]; then
+      go get github.com/mattn/goveralls;
+    fi
 
 install:
   - make setup-ci
 
 script:
-  - make build-all-race-ci
-  - make test-ci
-  - make coveralls
+  - if [ "$(git rev-parse --abbrev-ref HEAD)" == "" ]; then
+      make coveralls;
+    fi
