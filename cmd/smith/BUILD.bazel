@@ -26,6 +26,24 @@ go_binary(
     visibility = ["//visibility:public"],
 )
 
+sh_binary(
+    name = "run",
+    srcs = [
+        "run.sh",
+    ],
+    args = [
+        "$(location :smith_race)",
+        "-service-catalog=false",
+        "leader-elect",
+        "-client-config-from=file",
+        "-client-config-file-name=\"$(HOME)/.kube/config\"",
+        "-client-config-context=$(KUBE_CONTEXT)",
+    ],
+    data = [
+        ":smith_race",
+    ],
+)
+
 go_image(
     name = "container",
     binary = ":smith",
